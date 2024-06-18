@@ -94,13 +94,12 @@ public class App
                 currentTime = newTime;
                 accumulator += frameTime;
 
-                _ = SDL_PollEvent(out SDL_Event e);
-                if (e.type == SDL_EventType.SDL_QUIT){
-                    running = false;
-                    return;
-                }
-
                 while (accumulator >= deltaTime){
+                    _ = SDL_PollEvent(out SDL_Event e);
+                    if (e.type == SDL_EventType.SDL_QUIT){
+                        running = false;
+                        return;
+                    }
                     sceneManager.currentScene?.Update(deltaTime, e);
                     accumulator -= deltaTime;
                     time += deltaTime;
