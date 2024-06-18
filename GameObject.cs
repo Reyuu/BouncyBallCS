@@ -2,14 +2,7 @@
 
 namespace sdl_test;
 
-public interface IGameObject{
-    public void Setup(Scene parentScene);
-    public void Draw(IntPtr renderer);
-    public void Update(double dt, SDL_Event e);
-    public void Destroy();
-}
-public class GameObject : IGameObject
-{
+public class GameObject {
     public int x;
     public int y;
     public int z;
@@ -18,12 +11,17 @@ public class GameObject : IGameObject
     public Scene? parentScene;
 
     public GameObject? parent = null;
-    virtual public void Setup(Scene scene){
+    public Action<Scene> Setup = delegate(Scene scene){};
+    public Action<IntPtr> Draw = delegate(IntPtr renderer){};
+    public Action<double, SDL_Event> Update = delegate(double dt, SDL_Event e){};
+    public Action Destroy = delegate(){};
+    public GameObject() {
+        Setup += InitialSetup;
+    }
+    void InitialSetup(Scene scene)
+    {
         parentScene = scene;
     }
-    virtual public void Draw(IntPtr renderer){}
-    virtual public void Update(double dt, SDL_Event e){}
-    virtual public void Destroy(){}
 }
 
 

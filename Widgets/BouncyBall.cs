@@ -16,20 +16,27 @@ public class BouncyBall : GameObject
     int ww = 0;
     int wh = 0;
  
-    public override void Setup(Scene scene)
+    public BouncyBall() : base()
     {
-        base.Setup(scene);
+        Setup += PrivateSetup;
+        Draw += PrivateDraw;
+        Update += PrivateUpdate;
+    }
+
+    void PrivateSetup(Scene scene)
+    {
         app = scene.app;
         SDL_GetWindowSize(app.window, out ww, out wh);
         colorInt = Utils.IntFromColor(color);
     }
-    public override void Draw(IntPtr renderer){
+    void PrivateDraw(IntPtr renderer)
+    {
         _ = SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
         _ = filledCircleColor(renderer, (short)x, (short)y, (short)r, colorInt);
         _ = aacircleRGBA(renderer, (short)x, (short)y, (short)r, color.r, color.g, color.b, color.a);
     }
 
-    public override void Update(double dt, SDL_Event e)
+    void PrivateUpdate(double dt, SDL_Event e)
     {
         if (x >= ww || x <= 0) {
             bumpX = !bumpX;
